@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Django flatpages - {% block title %} {% endblock title %}</title>
+</head>
+<body>
+    <h2>Django flatpages app</h2>
+    {% for post in object_list %}
+    <p>{{ post.authorUser }}</p>
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
