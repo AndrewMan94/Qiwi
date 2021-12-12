@@ -1,13 +1,11 @@
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from .filters import PostFilter
 from .models import *
 from django.shortcuts import render
 from django.core.paginator import Paginator
-
-
-def index(request):
-    return render(request, 'index.html')
+from .forms import PostForm, CreatePostForm
 
 
 class PostList(ListView):
@@ -20,8 +18,7 @@ class PostList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = PostFilter(self.request.GET,
-        queryset = self.get_queryset())
+        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
         return context
 
     def post(self, request, *args, **kwargs):
@@ -35,6 +32,9 @@ class PostList(ListView):
     def form_class(self, POST):
         pass
 
+class PostDetailView(DetailView):
+    template_name = 'BreakingNews/post_detail.html'
+    queryset = Post.objects.all()
 
 class PostDetail(DetailView):
     model = Post
@@ -51,4 +51,27 @@ class Posts(View):
             'posts': posts,
         }
         return render(request, 'posts_list.html', data)
+
+class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',
+                           'news.change_post')
+    template_name = 'add.html'
+    form_class = CreatePostForm
+
+
+class PostUpdateView(UpdateView):
+    template_name = 'BreakingNews/post_create.html'
+    form_class = PostForm
+
+
+    def get_object(self, **kwargs):
+        id = self.kwargs.get('pk')
+        return Post.objects.get(pk=id)
+
+
+# дженерик для удаления товара
+class PostDeleteView(DeleteView):
+    template_name = 'BreakingNews/product_delete.html'
+    queryset = Post.objects.all()
+    success_url = '/posts/'
 

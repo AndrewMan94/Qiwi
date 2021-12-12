@@ -1,0 +1,39 @@
+{% block title %} Post list {% endblock title %}
+ 
+{% block content %}
+<h2>Вы действительно хотите удалить данную новость?</h2>
+<table>
+    <thead>
+        <th>
+            title
+        </th>
+        <th>
+            Category
+        </th>
+        <th>
+            Rating
+        </th>
+        <th>
+            Text
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ post.title }}
+        </td>
+        <td>
+            {{ post.category.name|title }}
+        </td>
+        <td>
+            {{ post.rating }}
+        </td>
+        <td>
+            {{ post.text }}
+        </td>
+    </tr>
+</table>
+ 
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %} 
