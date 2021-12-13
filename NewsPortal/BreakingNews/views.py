@@ -33,7 +33,7 @@ class PostList(ListView):
         pass
 
 class PostDetailView(DetailView):
-    template_name = 'BreakingNews/post_detail.html'
+    template_name = 'post_detail.html'
     queryset = Post.objects.all()
 
 class PostDetail(DetailView):
@@ -55,12 +55,12 @@ class Posts(View):
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',
                            'news.change_post')
-    template_name = 'add.html'
+    template_name = 'post_create.html'
     form_class = CreatePostForm
 
 
 class PostUpdateView(UpdateView):
-    template_name = 'BreakingNews/post_create.html'
+    template_name = 'post_create.html'
     form_class = PostForm
 
 
@@ -69,9 +69,8 @@ class PostUpdateView(UpdateView):
         return Post.objects.get(pk=id)
 
 
-# дженерик для удаления товара
 class PostDeleteView(DeleteView):
-    template_name = 'BreakingNews/product_delete.html'
+    template_name = 'post_delete.html'
     queryset = Post.objects.all()
     success_url = '/posts/'
 

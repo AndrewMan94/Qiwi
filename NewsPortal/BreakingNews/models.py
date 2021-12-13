@@ -1,12 +1,18 @@
+from django.contrib.auth.decorators import login_required
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Sum
-
+from django.shortcuts import redirect
+from django.views.generic import ListView
 
 
 class Author(models.Model):
     authorUser = models.OneToOneField(User, on_delete=models.CASCADE)
     ratingAuthor = models.SmallIntegerField(default=0)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.post_set = None
 
     def update_rating(self):
         postRat = self.post_set.aggregate(postRating=Sum('rating'))
@@ -17,16 +23,24 @@ class Author(models.Model):
         cRat = 0
         cRat + commentRat.get('commentRating')
 
-        self.ratingAuthor = pRat *3 + cRat
+        self.ratingAuthor = pRat * 3 + cRat
         self.save()
-
 
 
 class Category(models.Model):
     name = models.CharField(max_length=64, unique=True)
+    subscribers = models.ManyToManyField(User, through="CategorySubscribers")
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def is_subscribed(self):
+        return CategorySubscribers.objects.filter(id_category=self.pk).exists()
 
 
 class Post(models.Model):
+    objects = None
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     NEWS = 'NW'
     ARTICLE = 'AR'
@@ -45,15 +59,12 @@ class Post(models.Model):
         self.rating += 1
         self.save()
 
-
     def dislike(self):
         self.rating -= 1
         self.save()
 
-
     def preview(self):
-        return self.text[0:123] + '...'
-
+        return self.text [0:123] + '...'
 
 
 class PostCategory(models.Model):
@@ -75,3 +86,25 @@ class Comment(models.Model):
     def dislike(self):
         self.rating -= 1
         self.save()
+
+
+class SubscriptionView(ListView):
+    model = Category
+    template_name = 'subscriptions.html'
+    context_object_name = 'subscriptionView'
+    queryset = Category.objects.order_by('name')
+    paginate_by = 4
+
+
+class CategorySubscribers(models.Model):
+    id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+    id_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+@login_required
+def add_subscribe(request):
+    user = request.user
+    category = Category.objects.get(pk=request.POST['id_cat'])
+    subscribe = CategorySubscribers(id_user=user, id_category=category)
+    subscribe.save()
+
+    return redirect('/subscriptions')

@@ -30,4 +30,4 @@ class MyView(PermissionRequiredMixin, View):
                            '<app>.<action>_<model>')
 
 class AddPost(PermissionRequiredMixin, CreateView):
-    permission_required = ('News.add_post', )
+    permission_required = ('post_create.html', )
