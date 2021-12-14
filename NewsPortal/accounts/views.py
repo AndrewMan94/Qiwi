@@ -8,14 +8,14 @@ from NewsPortal.accounts.models import Appointment
 
 
 class AppointmentView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         return render(request, 'make_appointment.html', {})
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
         appointment = Appointment(
-            date=datetime.strptime(request.POST ['date'], '%Y-%m-%d'),
-            client_name=request.POST ['client_name'],
-            message=request.POST ['message'],
+            date=datetime.strptime(request.POST['date'], '%Y-%m-%d'),
+            client_name=request.POST['client_name'],
+            message=request.POST['message'],
         )
         appointment.save()
 

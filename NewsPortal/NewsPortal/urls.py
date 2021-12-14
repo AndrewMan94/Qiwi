@@ -24,4 +24,5 @@ urlpatterns = [
     path('', include('protect.urls')),
     path('', include('sign.urls')),
     path('', include('allauth.urls')),
+    path('appointments/', include(('accounts.urls', 'appointments'), namespace='appointments')),
 ]
