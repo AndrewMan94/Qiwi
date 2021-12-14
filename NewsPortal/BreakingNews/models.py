@@ -28,6 +28,7 @@ class Author(models.Model):
 
 
 class Category(models.Model):
+    objects = None
     name = models.CharField(max_length=64, unique=True)
     subscribers = models.ManyToManyField(User, through="CategorySubscribers")
 
@@ -97,6 +98,7 @@ class SubscriptionView(ListView):
 
 
 class CategorySubscribers(models.Model):
+    objects = None
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_category = models.ForeignKey(Category, on_delete=models.CASCADE)
 

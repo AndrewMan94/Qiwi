@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    {% include 'flatpages/default.html' %}
+    {% load static %}
+</head>
+<body>
+                <tr>
+                    <td>Имя пользователя:</td>
+                    <td>{{i.client_name}}</td>
+                </tr>
+                <tr>
+                    <td>Дата сообщения:</td>
+                    <td>{{i.date}}</td>
+                </tr>
+                <tr>
+                    <td>Сообщение:</td>
+                    <td>{{i.message}}</td>
+                </tr>
+                <tr>
+                    <td>Add Prescription:</td>
+                    <form method="post" >
+
+                        <td> {% csrf_token %}
+                            <textarea class="form-control" name="prescription"></textarea>
+                            <input type="hidden" value="{{i.id}}" name="idofappointment">
+                        </td>
+
+                    </form>
+                    </tr>
