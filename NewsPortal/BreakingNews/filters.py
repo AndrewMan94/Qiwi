@@ -6,5 +6,5 @@ from .models import *
 class PostFilter(FilterSet):
     class Meta:
         model = Post
-        fields = ('author', 'rating', 'text',
-                  'dateCreation')
+        fields = ('id_author', 'rating', 'text',
+                  'created')

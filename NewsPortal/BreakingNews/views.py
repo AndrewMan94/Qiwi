@@ -10,8 +10,8 @@ from .forms import PostForm, CreatePostForm
 
 class PostList(ListView):
     model = Post
-    template_name = 'posts.html'
-    context_object_name = 'posts'
+    template_name = 'post_list.html'
+    context_object_name = 'post_list'
     queryset = Post.objects.order_by('-id')
     ordering = ['-rating']
     paginate_by = 1
@@ -53,8 +53,7 @@ class Posts(View):
         return render(request, 'posts_list.html', data)
 
 class PostCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
-    permission_required = ('news.add_post',
-                           'news.change_post')
+    permission_required = ('post_create')
     template_name = 'post_create.html'
     form_class = CreatePostForm
 
@@ -72,5 +71,5 @@ class PostUpdateView(UpdateView):
 class PostDeleteView(DeleteView):
     template_name = 'post_delete.html'
     queryset = Post.objects.all()
-    success_url = '/posts/'
+    success_url = '/post_list/'
 

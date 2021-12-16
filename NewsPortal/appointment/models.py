@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class Appointment(models.Model):
-    date = models.DateField(
+    date = models.DateTimeField(
         default=datetime.utcnow,
     )
     client_name = models.CharField(

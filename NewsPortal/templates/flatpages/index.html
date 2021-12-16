@@ -5,10 +5,67 @@
 </head><p>Приветствуем Вас на NewsPortal от компании Qiwi</p>
 {% block content %}
 {% if is_not_authors %}
-<button> <a href="sign/become_authors/"> Хочу быть автором!</a> </button>
+<button> <a href="become_authors/"> Хочу быть автором!</a> </button>
 {% endif %}
 <h2>Страница авторизованного пользователя {{request.user.username}}</h2>
 <div> Здесь может содержаться персональная информация для каждого пользователя </div>
 
+
+
+    {% if request.user.is_authenticated %}
+        {% if is_not_author %}
+        <p align="right"> <button> <a class="nav-link" href="/sign/author/">Стать автором</a> </button> </p>
+             </html>
+                 <p>{% else %}Пользователь является автором новостей</p>
+                 <p>{% endif %} {% endif %}</p>
+             <div>
+
+
+    <h3>Последние публикации</h3>
+    <br>
+    {% if postList %}
+        <ul>
+        {% for record in postList %}
+            <hr>
+            <li>
+                <p align="left">
+                    Дата публикации: {{ post.created }}<br>Автор: {{ post.id_author }}
+                </p>
+                <p>
+                    <a class="nav-link" href="/post/{{ post.pk }}">{{ post.title }}</a>
+                </p>
+                <p>
+                </p>
+            </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        {% if is_paginated %}
+            {% if page_obj.has_previous %}
+                <a href="?page=1">В начало</a>
+                <a href="?page={{ page_obj.previous_page_number }}"><<<</a>
+            {% endif %}
+
+            {% for num in page_obj.paginator.page_range %}
+                {% if page_obj.number == num %}
+                    <a>{{ num }}</a>
+                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                    <a href="?page={{ num }}">{{ num }}</a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}">>>></a>
+                <a href="?page={{ page_obj.paginator.num_pages }}">В конец</a>
+            {% endif %}
+
+        {% endif %}
+
+    {% else %}
+        <h3>Новостей нет =(</h3>
+    {% endif %}
+
+{% endblock content %}
+
 <button> <a href="/logout">Выйти</a> </button>
-{% endblock %}
+                 </div>
