@@ -3,9 +3,10 @@
 <head>
 <title>Django flatpages - {% block title %} {% endblock title %}</title>
 </head><p>Приветствуем Вас на NewsPortal от компании Qiwi</p>
+<button> <a href="/post_list"> Вернуться на главную страницу!</a> </button>
 {% block content %}
 {% if is_not_authors %}
-<button> <a href="become_authors/"> Хочу быть автором!</a> </button>
+<button> <a href="/authors"> Хочу быть автором!</a> </button>
 {% endif %}
 <h2>Страница авторизованного пользователя {{request.user.username}}</h2>
 <div> Здесь может содержаться персональная информация для каждого пользователя </div>
@@ -14,7 +15,7 @@
 
     {% if request.user.is_authenticated %}
         {% if is_not_author %}
-        <p align="right"> <button> <a class="nav-link" href="/sign/author/">Стать автором</a> </button> </p>
+        <p align="right"> <button> <a class="nav-link" href="/authors">Стать автором</a> </button> </p>
              </html>
                  <p>{% else %}Пользователь является автором новостей</p>
                  <p>{% endif %} {% endif %}</p>
@@ -23,16 +24,16 @@
 
     <h3>Последние публикации</h3>
     <br>
-    {% if postList %}
+    {% if post_list %}
         <ul>
-        {% for record in postList %}
+        {% for record in post_list %}
             <hr>
             <li>
                 <p align="left">
                     Дата публикации: {{ post.created }}<br>Автор: {{ post.id_author }}
                 </p>
                 <p>
-                    <a class="nav-link" href="/post/{{ post.pk }}">{{ post.title }}</a>
+                    <a class="nav-link" href="/post_list/{{ post.pk }}">{{ post.title }}</a>
                 </p>
                 <p>
                 </p>
@@ -62,7 +63,7 @@
         {% endif %}
 
     {% else %}
-        <h3>Новостей нет =(</h3>
+        <h3>Новостей нет</h3>
     {% endif %}
 
 {% endblock content %}

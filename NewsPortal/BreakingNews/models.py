@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class Author(models.Model):
     id_user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
+    unique = True
 
     def update_rating(self):
         result = 0
@@ -35,6 +36,7 @@ class Category(models.Model):
     objects = None
     name = models.CharField(max_length=128, unique=True)
     subscribers = models.ManyToManyField(User, through="CategorySubscribers")
+    unique = True
 
     def __str__(self):
         return self.name
@@ -48,10 +50,12 @@ class CategorySubscribers(models.Model):
     objects = None
     id_user = models.ForeignKey(User, on_delete=models.CASCADE)
     id_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    unique = True
 
 
 class Post(models.Model):
     objects = None
+    unique = True
     article = "AR"
     news = "NW"
     POST_TYPE = [(article, 'Статья'), (news, 'Новость')]
@@ -63,6 +67,9 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     text = models.TextField()
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.title}: {self.text[:10]}'
 
     def like(self):
         self.rating += 1
@@ -80,9 +87,13 @@ class Post(models.Model):
         return f'/post_list/{self.id}'
 
 
+
+
 class PostCategory(models.Model):
     id_post = models.ForeignKey(Post, on_delete=models.CASCADE)
     id_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    unique = True
+
 
 
 class Comment(models.Model):
@@ -92,6 +103,7 @@ class Comment(models.Model):
     created = models.DateTimeField()
     text = models.TextField()
     rating = models.IntegerField()
+    unique = True
 
     def like(self):
         self.rating += 1

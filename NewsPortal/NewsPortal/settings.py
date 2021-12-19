@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'appointment',
     'django_apscheduler',
 
+
 ]
 
 SITE_ID = 1
@@ -173,6 +174,6 @@ ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_FORMS = {'signup': 'sign.models.CommonSignupForm'}
 
-DEFAULT_FROM_EMAIL = 'ManAndEvg@yandex.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 SERVER_EMAIL = 'ManAndEvg@yandex.ru'

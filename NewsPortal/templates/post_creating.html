@@ -1,9 +1,5 @@
 {% extends 'flatpages/default.html' %}
 
-{% block title %}
-post_list
-{% endblock title %}
-
 {% block content %}
 <h3>Добавление новости</h3>
 <form method="POST">
@@ -11,7 +7,7 @@ post_list
     <table align="center">
     {{ form }}
     </table>
-    <button> <a href="/post_creating/"> Добавить новость! </a> </button>
+    <input type="submit" value="Добавить">
 </form>
 
 {% endblock content %}

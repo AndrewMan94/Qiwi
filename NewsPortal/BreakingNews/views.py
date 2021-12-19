@@ -1,9 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
 from django.views.generic import ListView, UpdateView, CreateView, DetailView, DeleteView
 from .filters import PostFilter
 from .models import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from .forms import PostForm, CreatePostForm
 
@@ -36,10 +37,11 @@ class PostDetailView(DetailView):
     template_name = 'post_detail.html'
     queryset = Post.objects.all()
 
+
 class PostDetail(DetailView):
     model = Post
     context_object_name = 'Post'
-    template_name = 'post.html'
+    template_name = 'post_detail.html'
 
 
 class Posts(View):
@@ -73,3 +75,18 @@ class PostDeleteView(DeleteView):
     queryset = Post.objects.all()
     success_url = '/post_list/'
 
+class SubscriptionView(ListView):
+    model = Category
+    template_name = 'subscriptions_view.html'
+    context_object_name = 'subscriptionView'
+    queryset = Category.objects.order_by('name')
+    paginate_by = 4
+
+@login_required
+def add_subscribe(request):
+    user = request.user
+    category = Category.objects.get(pk=request.POST['id_category'])
+    subscribe = CategorySubscribers(id_user=user, id_category=category)
+    subscribe.save()
+
+    return redirect('/subscriptions')

@@ -53,6 +53,7 @@ class CategorySubscribersAdmin(admin.ModelAdmin):
 class PostCategoryAdmin(admin.ModelAdmin):
     fields = ['id_post', 'id_category']
 
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Comment, CommentAdmin)

@@ -3,7 +3,7 @@
 {% load custom_filters %}
 
 {% block title %}
-Post
+{% url 'post_list' %}
 {% endblock title %}
 
 {% block content %}
@@ -13,5 +13,5 @@ Post
 <div align="left"><a class="nav-link" href="../post_list/post_create{{ postView.pk }}">Редактировать</a></div>
 <div align="left"><a class="nav-link" href="../post_list/delete/{{ postView.pk }}">Удалить</a></div>
 <hr>
-<p align="justify">{{ postView.text|censor }}</p>
+<p align="justify">{{ postView.text }}</p>
 {% endblock content %}

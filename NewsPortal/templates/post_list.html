@@ -1,13 +1,13 @@
 {% extends 'flatpages/default.html' %}
  
-{% block title %} Post_list {% endblock title %}
+{% block title %} post_list {% endblock title %}
  
 {% block content %}
  
 <table>
     <thead>
         <th>
-            Title
+            Actions
         </th>
         <th>
             Category
@@ -22,12 +22,11 @@
     {% for post in filter.qs %} <
     <tr>
         <td>
-            <a href="{% url 'post_detail' post.id %}">{{post.title}}</a>
             <a href="{% url 'post_update' post.id %}"><u>Редактировать</u></a>
             <a href="{% url 'post_delete' post.id %}"><u> Удалить </u></a>
         </td>
         <td>
-            {{ post.category.name|title }}
+            {{ post.id_post_category.name }}
         </td>
         <td>
             {{ post.rating }}
