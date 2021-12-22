@@ -28,3 +28,4 @@ def notify_managers_appointment_canceled(sender, instance, **kwargs):
     )
 
     print(subject)
+

@@ -1,13 +1,12 @@
 from celery import shared_task
-from django.core.mail import EmailMultiAlternatives
 import time
-
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from .models import CategorySubscribers, Post
 from datetime import datetime, timedelta
+from NewsPortal.BreakingNews.models import CategorySubscribers
+from Qiwi.NewsPortal.BreakingNews.models import Post
 
-# Функция отправки уведомления автору о создании новой статьи
+
 @shared_task
 def new_post_notification(subj, email, content):
     time.sleep(5)
@@ -15,14 +14,12 @@ def new_post_notification(subj, email, content):
     msg = EmailMultiAlternatives(
         subject=subj,
         body='',
-        from_email='pyataevfamily@yandex.ru',
+        from_email='ManAndEvg@yandex.ru',
         to=[email],
     )
     msg.attach_alternative(content, "text/html")
     msg.send()
 
-
-# Еженедельная рассылка новых новостей
 @shared_task()
 def weekly_notification():
     print("----------------------------------------------------------------------------------------------------------------------")
@@ -33,16 +30,18 @@ def weekly_notification():
             print(user)
             subject = f'Здравствуй, {user}! Еженедельная рассылка новостей по категории "{subscriber.id_category}"'
 
-            postList = Post.objects.filter(created__gte=(datetime.today() - timedelta(days=7)), id_post_category=subscriber.id_category.pk)
-            for post in postList:
+            post_list = Post.objects.filter(created__gte=(datetime.today() - timedelta(days=7)), id_post_category=subscriber.id_category.pk)
+            for post in post_list:
                 print(post.header, post.created, subscriber.id_category)
 
-            html_content = render_to_string('distribution.html', {'postList': postList, })
+            html_content = render_to_string('distribution.html', {'post_list': post_list, })
             msg = EmailMultiAlternatives(
                 subject=subject,
                 body='',
-                from_email='pyataevfamily@yandex.ru',
+                from_email='ManAndEvg@yandex.ru',
                 to=[user.email],
             )
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+
+
