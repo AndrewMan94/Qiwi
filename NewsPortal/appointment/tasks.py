@@ -32,9 +32,9 @@ def weekly_notification():
 
             post_list = Post.objects.filter(created__gte=(datetime.today() - timedelta(days=7)), id_post_category=subscriber.id_category.pk)
             for post in post_list:
-                print(post.header, post.created, subscriber.id_category)
+                print(post.title, post.created, subscriber.id_category)
 
-            html_content = render_to_string('distribution.html', {'post_list': post_list, })
+            html_content = render_to_string('New_add_post.html', {'post_list': post_list, })
             msg = EmailMultiAlternatives(
                 subject=subject,
                 body='',
