@@ -192,19 +192,19 @@ LOGGING = {
             },
             'django.request': {
                 'handlers': ['ERCR'],
-                'level': 'INFO'
+                'level': 'ERROR'
             },
             'django.server': {
                 'handlers': ['ERCR'],
-                'level': 'INFO'
+                'level': 'ERROR'
             },
             'django.template': {
                 'handlers': ['ERCR'],
-                'level': 'INFO'
+                'level': 'ERROR'
             },
             'django.db_backends': {
                 'handlers': ['ERCR'],
-                'level': 'INFO'
+                'level': 'ERROR'
             },
             'django.security': {
                 'handlers': ['SC'],
@@ -265,7 +265,8 @@ LOGGING = {
             'mail_admins': {
                 'level': 'ERROR',
                 'filters': ['require_debug_false'],
-                'class': 'django.utils.log.AdminEmailHandler',
+                'class': ['django.utils.log.AdminEmailHandler', 'logging.FileHandler'],
+                'filename': 'NewsPortal/general.log',
                     },
             }
         }
