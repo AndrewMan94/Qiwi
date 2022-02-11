@@ -12,9 +12,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -26,7 +26,6 @@ SECRET_KEY = 'django-insecure-3_u(!4vmlh05u1(@_$*x-!(kyhrm#at7x&+37jh$87599s-l=x
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -50,7 +49,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'appointment',
     'django_apscheduler',
-
 
 ]
 
@@ -89,7 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'NewsPortal.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -164,7 +161,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, "static"),
 ]
 
 ACCOUNT_EMAIL_REQUIRED = True
@@ -183,3 +180,92 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'loggers': {
+            'django': {
+                'handlers': ['console', 'IO'],
+                'level': 'DEBUG'
+            },
+            'django.request': {
+                'handlers': ['ERCR'],
+                'level': 'INFO'
+            },
+            'django.server': {
+                'handlers': ['ERCR'],
+                'level': 'INFO'
+            },
+            'django.template': {
+                'handlers': ['ERCR'],
+                'level': 'INFO'
+            },
+            'django.db_backends': {
+                'handlers': ['ERCR'],
+                'level': 'INFO'
+            },
+            'django.security': {
+                'handlers': ['SC'],
+                'level': 'INFO'
+            }
+        },
+        'formatters': {
+            'FERCR': {
+                'format': '{asctime} {levelname} {message} {pathname} {sys.exc_info}',
+                'style': '{',
+            },
+            'FSC': {
+                'format': '{asctime} {levelname} {module} {message}',
+                'style': '{',
+            },
+            'FIO': {
+                'format': '{asctime} {levelname} {module} {message}',
+                'style': '{',
+            }
+        },
+        'filters': {
+            'require_debug_true': {
+                '()': 'django.utils.log.RequireDebugTrue',
+            },
+
+            'require_debug_false': {
+                '()': 'django.utils.log.RequireDebugFalse',
+                                        }
+
+                    },
+        'handlers': {
+            'console': {
+                'level': 'DEBUG',
+                'filters': ['require_debug_true'],
+                'class': 'logging.StreamHandler',
+            },
+            'IO': {
+                'level': 'INFO',
+                'filters': ['require_debug_true'],
+                'class': 'logging.FileHandler',
+                'formatter': 'FIO',
+                'filename': 'NewsPortal/general.log',
+            },
+            'ERCR': {
+                'level': 'ERROR',
+                'filters': ['require_debug_true'],
+                'class': 'logging.FileHandler',
+                'formatter': 'FERCR',
+                'filename': 'NewsPortal/error.log',
+            },
+            'SC': {
+                'level': 'INFO',
+                'filters': ['require_debug_true'],
+                'class': 'logging.FileHandler',
+                'formatter': 'FSC',
+                'filename': 'NewsPortal/security.log',
+            },
+            'mail_admins': {
+                'level': 'ERROR',
+                'filters': ['require_debug_false'],
+                'class': 'django.utils.log.AdminEmailHandler',
+                    },
+            }
+        }

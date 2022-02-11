@@ -90,3 +90,5 @@ def add_subscribe(request):
     subscribe.save()
 
     return redirect('/subscriptions')
+
+
